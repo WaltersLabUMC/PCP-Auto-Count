@@ -1,8 +1,6 @@
-Begin license text.
+# PCP Autocount
 
-PCP Autocount
-
-Copyright 2023, 
+## Copyright 2023, 
 Luke Baum, 
 Kendra Stansak, 
 Bradley J. Walters
