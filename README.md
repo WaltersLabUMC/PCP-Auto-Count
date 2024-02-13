@@ -16,7 +16,7 @@ PCP Auto Count should now be an option under the “Analyze” tab.
 
 ## Getting Help:
 
-You can launch the user manual for PCP Auto Count by clicking "Manual" on its menu. You can also find it [here](PCP%20Auto%20Count/lib/pcp_auto_count/Manual.pdf).
+You can launch the user manual for PCP Auto Count by clicking "Manual" on its menu. You can also find it [here](https://github.com/WaltersLabUMC/PCP-Auto-Count/blob/main/PCP_Auto_Count/lib/pcp_auto_count/Manual.pdf).
 
 ## License:
 
