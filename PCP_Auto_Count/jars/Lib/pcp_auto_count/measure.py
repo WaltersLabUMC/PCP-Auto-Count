@@ -83,7 +83,8 @@ def main(quickrun=False):
 		chunks.plasticWrapChunks()
 	chunks.findCentroids()
 	chunks.findCaves(options)
-	chunks.removeCavelessChunks()	
+	chunks.removeCavelessChunks()
+	chunks.findCentroidDistances()
 	chunks.calculateAngles(options)
 	chunks.generateChunkLabels()
 	

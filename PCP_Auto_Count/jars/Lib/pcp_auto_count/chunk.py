@@ -68,8 +68,10 @@ class Chunk(Entity):
 
 	def findCaveCentroid(self):
 		self.caveCentroid = findCenterOfMassB(self.cave.columns)
-		self.centroidDistance = getDistance(self.centroid[0], self.centroid[1], self.caveCentroid[0], self.caveCentroid[1])
 		self.caveCentroidInt = [int(round(self.caveCentroid[0])), int(round(self.caveCentroid[1]))]
+
+        def findCentroidDistance(self):
+                self.centroidDistance = getDistance(self.centroid[0], self.centroid[1], self.caveCentroid[0], self.caveCentroid[1])
 
 	def getArrowCoords(self):
                 startX = self.centroid[0]

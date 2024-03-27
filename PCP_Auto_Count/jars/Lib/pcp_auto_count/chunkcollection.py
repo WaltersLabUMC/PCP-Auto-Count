@@ -196,6 +196,14 @@ class ChunkCollection:
 			IJ.showProgress(i, count)
 			c.findCentroid()
 
+        # For each chunk, finds the distance between the chunk and cave centroid.
+	def findCentroidDistances(self):
+                count = self.count()
+                for i, c in enumerate(self.chunks):
+                        IJ.showStatus("PCP Auto Count: Calculating centroid distances...")
+			IJ.showProgress(i, count)
+                        c.findCentroidDistance()                
+
 	# Calculates the cell-PCP angle for each chunk.
 	def calculateAngles(self, options):
 		count = self.count()

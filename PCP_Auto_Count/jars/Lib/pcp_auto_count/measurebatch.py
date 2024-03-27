@@ -101,7 +101,8 @@ def main(quickrun=False):
 			chunks.plasticWrapChunks()
 		chunks.findCentroids()
 		chunks.findCaves(options)
-		chunks.removeCavelessChunks()	
+		chunks.removeCavelessChunks()
+		chunks.findCentroidDistances()
 		chunks.calculateAngles(options)
 		chunks.generateChunkLabels()
 		
@@ -160,6 +161,7 @@ def showAngleResultsTable(chunkCollections, imageNames):
 				table.addValue("Chunk Centroid Y", c.centroid[1])
 				table.addValue('Cave Centroid X', c.caveCentroid[0])
 				table.addValue('Cave Centroid Y', c.caveCentroid[1])
+				table.addValue('Vector Length', c.centroidDistance)
 				table.addValue(angleLabel, c.angle)					
 		
 		IJ.showProgress(i + 1, collectionCount)
@@ -173,6 +175,7 @@ def showAngleResultsTable(chunkCollections, imageNames):
 		table.addValue("Chunk Centroid Y", "")
 		table.addValue('Cave Centroid X', "")
 		table.addValue('Cave Centroid Y', "")
+		table.addValue('Vector Length', "")
 		table.addValue(angleLabel, "")
 		
 	table.show('Angle Results for Chunks - Combined')
