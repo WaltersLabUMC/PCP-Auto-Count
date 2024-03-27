@@ -430,6 +430,7 @@ class ChunkCollection:
 				table.addValue("Chunk Centroid Y", c.centroid[1])
 				table.addValue('Cave Centroid X', c.caveCentroid[0])
 				table.addValue('Cave Centroid Y', c.caveCentroid[1])
+				table.addValue('Vector Length', c.centroidDistance)
 				table.addValue(angleLabel, c.angle)
 		else:
 			IJ.showProgress(1, 1)
@@ -439,6 +440,7 @@ class ChunkCollection:
 			table.addValue("Chunk Centroid Y", "")
 			table.addValue('Cave Centroid X', "")
 			table.addValue('Cave Centroid Y', "")
+			table.addValue('Vector Length', "")
 			table.addValue(angleLabel, "")
 
 		table.show('Angle Results for Chunks - ' + self.imageTitle)

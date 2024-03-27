@@ -1,1 +1,0 @@
-Should work with Fiji 1.53r+ on all platforms

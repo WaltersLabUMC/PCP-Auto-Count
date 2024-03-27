@@ -8,6 +8,7 @@ class Chunk(Entity):
 	def __init__(self):
 		Entity.__init__(self)
 		self.plasticWrapBorder = []
+		self.centroidDistance = -1.0
 
 	@staticmethod
 	def getEntityType():
@@ -67,44 +68,20 @@ class Chunk(Entity):
 
 	def findCaveCentroid(self):
 		self.caveCentroid = findCenterOfMassB(self.cave.columns)
+		self.centroidDistance = getDistance(self.centroid[0], self.centroid[1], self.caveCentroid[0], self.caveCentroid[1])
 		self.caveCentroidInt = [int(round(self.caveCentroid[0])), int(round(self.caveCentroid[1]))]
 
 	def getArrowCoords(self):
                 startX = self.centroid[0]
                 startY = self.centroid[1]
 
-                distance = getDistance(startX, startY, self.caveCentroid[0], self.caveCentroid[1])
-                distance = distance * 1.5
+                distance = self.centroidDistance * 1.5
                 if distance < 10.0:
                         distance = 10.0
 
                 endpoint = getEndpointFloat(startX, startY, self.imageAngle, distance) 
 
                 return(startX, startY, endpoint[0], endpoint[1])
-                
-
-	def getArrowCoords_OLD(self):
-		startX = self.centroid[0]
-		startY = self.centroid[1]
-
-		endX = 0.0
-		endY = 0.0
-
-		if self.caveCentroid[0] >= startX:
-		# Quad 1 or 4
-			endX = self.caveCentroid[0] + (self.caveCentroid[0] - startX)
-		else:
-		# Quad 2 or 3
-			endX = self.caveCentroid[0] - (startX - self.caveCentroid[0])
-
-		if self.caveCentroid[1] >= startY:
-		# Quad 1 or 2
-			endY = self.caveCentroid[1] + (self.caveCentroid[1] - startY)
-		else:
-		#Quad 3 or 4
-			endY = self.caveCentroid[1] - (startY - self.caveCentroid[1])
-
-		return [startX, startY, endX, endY]
 
 	def calculateAngle(self, options):
 
