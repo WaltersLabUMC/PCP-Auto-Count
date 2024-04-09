@@ -91,12 +91,9 @@ def main(quickrun=False):
 	if options.outputImage == True:
 		nimp = chunks.chunksToNewImage(options)			
 		if options.outputImageArrows == True:
-			chunks.drawArrowsOnImage(nimp, options.getColorArrows())
+			chunks.drawArrowsOnImage(nimp, options)
 		if options.outputImageLabels == True or options.outputImageAngles == True:
-                        fontSize = 12
-                        if options.outputImageOverrideFontSize == True:
-                                fontSize = options.outputImageFontSize
-			chunks.drawAngleLabelsOnImage(nimp, options.outputImageLabels, options.outputImageAngles, options.getColorLabels(), fontSize)
+			chunks.drawAngleLabelsOnImage(nimp, options.outputImageLabels, options.outputImageAngles, options.getColorLabels(), options.drawingFontSize)
 		nimp.show()	
 	
 	if options.outputResultsTable == True:

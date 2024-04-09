@@ -76,11 +76,6 @@ def main(quickrun=False):
 	
 	# Process each image individually.
 	chunkCollections = []
-
-	# Determine font size for image and overlay labels
-	fontSize = 12
-	if options.outputImageOverrideFontSize == True:
-                fontSize = options.outputImageFontSize
 	
 	# All measuring, plus image and overlay outputs, can be done completely individually.
 	for imp in imps:
@@ -109,9 +104,9 @@ def main(quickrun=False):
 		if options.outputImage == True:
 			nimp = chunks.chunksToNewImage(options)			
 			if options.outputImageArrows == True:
-				chunks.drawArrowsOnImage(nimp, options.getColorArrows())
+				chunks.drawArrowsOnImage(nimp, options)
 			if options.outputImageLabels == True or options.outputImageAngles == True:
-				chunks.drawAngleLabelsOnImage(nimp, options.outputImageLabels, options.outputImageAngles, options.getColorLabels(), fontSize)
+				chunks.drawAngleLabelsOnImage(nimp, options.outputImageLabels, options.outputImageAngles, options.getColorLabels(), options.drawingFontSize)
 			nimp.show()	
 		
 		if options.outputOverlay == True:
@@ -162,6 +157,7 @@ def showAngleResultsTable(chunkCollections, imageNames):
 				table.addValue('Cave Centroid X', c.caveCentroid[0])
 				table.addValue('Cave Centroid Y', c.caveCentroid[1])
 				table.addValue('Vector Length', c.centroidDistance)
+				table.addValue('Chunk Area', c.getSize())
 				table.addValue(angleLabel, c.angle)					
 		
 		IJ.showProgress(i + 1, collectionCount)
@@ -176,6 +172,7 @@ def showAngleResultsTable(chunkCollections, imageNames):
 		table.addValue('Cave Centroid X', "")
 		table.addValue('Cave Centroid Y', "")
 		table.addValue('Vector Length', "")
+		table.addValue('Chunk Area', "")
 		table.addValue(angleLabel, "")
 		
 	table.show('Angle Results for Chunks - Combined')

@@ -46,8 +46,6 @@ class ProcessingOptions:
 		self.outputImageBadCells = outputImageBadCells
 		self.outputImagePlasticWrapBorder = outputImagePlasticWrapBorder
 		self.outputImagePlasticWrapAddedWeight = outputImagePlasticWrapAddedWeight
-		self.outputImageOverrideFontSize = False
-		self.outputImageFontSize = 12
 		self.outputImageMarginPixels = 0
 		self.outputCellSummary = outputCellSummary
 		self.outputRoseDiagram = False
@@ -58,12 +56,14 @@ class ProcessingOptions:
 		self.outputOverlayArrows = True
 		self.outputOverlayLabels = True
 		self.outputOverlayAngles = False
-		self.outputOverlayOverrideFontSize = False
-		self.outputOverlayFontSize = 12
+
+                self.drawingFontSize = 12
+		self.drawingArrowheadSize = 5
+		self.drawingArrowlineSize = 3
 		
 		self.angleAxisMode = 'I'
 
-		# Colors
+		# Drawing (Colors and Font)
 
 		defaultColors = DefaultDrawingColors()
 
@@ -167,8 +167,6 @@ class ProcessingOptions:
 		iniString += 'output_image_plastic_wrap_border = ' + str(self.outputImagePlasticWrapBorder).lower() + '\n'
 		iniString += 'output_image_plastic_wrap_added_weight = ' + str(self.outputImagePlasticWrapAddedWeight).lower() + '\n'
 		iniString += 'output_image_margin_pixels = ' + str(self.outputImageMarginPixels) + '\n'
-		iniString += 'output_image_override_font_size = ' + str(self.outputImageOverrideFontSize).lower() + '\n'
-		iniString += 'output_image_font_size = ' + str(self.outputImageFontSize) + '\n'
 		iniString += 'output_cell_summary = ' + str(self.outputCellSummary).lower() + '\n'
 		iniString += 'output_rose_diagram = ' + str(self.outputRoseDiagram).lower() + '\n'
 		iniString += 'output_rose_diagram_axis_size = ' + str(self.outputRoseDiagramAxisSize) + '\n'
@@ -177,9 +175,7 @@ class ProcessingOptions:
 		iniString += 'output_overlay = ' + str(self.outputOverlay).lower() + '\n'
 		iniString += 'output_overlay_arrows = ' + str(self.outputOverlayArrows).lower() + '\n'
 		iniString += 'output_overlay_labels = ' + str(self.outputOverlayLabels).lower() + '\n'
-		iniString += 'output_overlay_angles = ' + str(self.outputOverlayAngles).lower() + '\n'
-		iniString += 'output_overlay_override_font_size = ' + str(self.outputOverlayOverrideFontSize).lower() + '\n'
-		iniString += 'output_overlay_font_size = ' + str(self.outputOverlayFontSize) + '\n\n'
+		iniString += 'output_overlay_angles = ' + str(self.outputOverlayAngles).lower() + '\n\n'
 		
 		iniString += '[colors]\n'
                 iniString += 'color_noise_red = ' + str(self.color_noise_red) + '\n'
@@ -221,7 +217,12 @@ class ProcessingOptions:
 		iniString += 'color_rose_diagram_red = ' + str(self.color_rose_diagram_red) + '\n'
 		iniString += 'color_rose_diagram_green = ' + str(self.color_rose_diagram_green) + '\n'
 		iniString += 'color_rose_diagram_blue = ' + str(self.color_rose_diagram_blue) + '\n'
-		iniString += 'color_rose_diagram_alpha = ' + str(self.color_rose_diagram_alpha)
+		iniString += 'color_rose_diagram_alpha = ' + str(self.color_rose_diagram_alpha) + '\n\n'
+
+		iniString += '[drawing]\n'
+		iniString += 'drawing_font_size = ' + str(self.drawingFontSize) + '\n'
+		iniString += 'drawing_arrowhead_size = ' + str(self.drawingArrowheadSize) + '\n'
+		iniString += 'drawing_arrowline_size = ' + str(self.drawingArrowlineSize)
 		
 		return iniString
 
@@ -618,20 +619,6 @@ def getProcessingOptionsFromSettingsFile():
                                 if n > -1:
                                         savedOptions.outputImageMarginPixels = n
 
-                elif line.startswith('output_image_override_font_size = '):
-                        x = line[34:]
-                        if x == 'true':
-                                savedOptions.outputImageOverrideFontSize = True
-                        elif x == 'false':
-                                savedOptions.outputImageOverrideFontSize = False
-
-                elif line.startswith('output_image_font_size = '):
-                        x = line[25:]
-                        if x.isnumeric():
-                                n = int(x)
-                                if n > 3 and n < 1001:
-                                        savedOptions.outputImageFontSize = n
-
                 elif line.startswith('output_cell_summary = '):
                         x = line[22:]
                         if x == 'true':
@@ -667,19 +654,26 @@ def getProcessingOptionsFromSettingsFile():
                         elif x == 'false':
                                 savedOptions.outputOverlayAngles = False
 
-                elif line.startswith('output_overlay_override_font_size = '):
-                        x = line[36:]
-                        if x == 'true':
-                                savedOptions.outputOverlayOverrideFontSize = True
-                        elif x == 'false':
-                                savedOptions.outputOverlayOverrideFontSize = False
-
-                elif line.startswith('output_overlay_font_size = '):
-                        x = line[27:]
+                elif line.startswith('drawing_font_size = '):
+                        x = line[20:]
                         if x.isnumeric():
                                 n = int(x)
                                 if n > 3 and n < 1001:
-                                        savedOptions.outputOverlayFontSize = n
+                                        savedOptions.drawingFontSize = n
+
+                elif line.startswith('drawing_arrowhead_size = '):
+                        x = line[25:]
+                        if x.isnumeric():
+                                n = int(x)
+                                if n > 0 and n < 1001:
+                                        savedOptions.drawingArrowheadSize = n
+
+                elif line.startswith('drawing_arrowline_size = '):
+                        x = line[25:]
+                        if x.isnumeric():
+                                n = int(x)
+                                if n > 0 and n < 1001:
+                                        savedOptions.drawingArrowlineSize = n
 
                 elif line.startswith('color_'):
                         

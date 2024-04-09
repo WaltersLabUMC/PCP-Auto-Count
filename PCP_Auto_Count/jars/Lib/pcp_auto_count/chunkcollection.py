@@ -249,13 +249,10 @@ class ChunkCollection:
 		ip.fill()
 
 		if options.outputOverlayArrows == True:
-			self.drawArrowsOnImage(imp, options.getColorArrows())
+			self.drawArrowsOnImage(imp, options)
 
 		if options.outputOverlayLabels == True or options.outputOverlayAngles == True:
-                        fontSize = 12
-                        if options.outputOverlayOverrideFontSize == True:
-                                fontSize = options.outputOverlayFontSize
-			self.drawAngleLabelsOnImage(imp, options.outputOverlayLabels, options.outputOverlayAngles, options.getColorLabels(), fontSize)
+			self.drawAngleLabelsOnImage(imp, options.outputOverlayLabels, options.outputOverlayAngles, options.getColorLabels(), options.drawingFontSize)
 
 		imp.updateAndRepaintWindow()
 
@@ -399,13 +396,14 @@ class ChunkCollection:
 		return imp
 
 	# Draws arrows representing all chunk angles on an image.
-	def drawArrowsOnImage(self, imp, arrowColor):
+	def drawArrowsOnImage(self, imp, options):
+                arrowColor = options.getColorArrows()
 		count = self.count()
 		for i, c in enumerate(self.chunks):
 			IJ.showStatus("PCP Auto Count: Drawing arrows for angle measurements...")
 			IJ.showProgress(i, count)
 			coords = c.getArrowCoords()
-			drawArrow(imp, arrowColor, coords[0], coords[1], coords[2], coords[3])
+			drawArrow(imp, arrowColor, coords[0], coords[1], coords[2], coords[3], options.drawingArrowheadSize, options.drawingArrowlineSize)
 
 	# Draws angle labels and/or angle measures at each chunk centroid.
 	def drawAngleLabelsOnImage(self, imp, outputImageLabels, outputImageAngles, textColor, fontSize = 12):
@@ -439,6 +437,7 @@ class ChunkCollection:
 				table.addValue('Cave Centroid X', c.caveCentroid[0])
 				table.addValue('Cave Centroid Y', c.caveCentroid[1])
 				table.addValue('Vector Length', c.centroidDistance)
+				table.addValue('Chunk Area', c.getSize())
 				table.addValue(angleLabel, c.angle)
 		else:
 			IJ.showProgress(1, 1)
@@ -449,6 +448,7 @@ class ChunkCollection:
 			table.addValue('Cave Centroid X', "")
 			table.addValue('Cave Centroid Y', "")
 			table.addValue('Vector Length', "")
+			table.addValue('Chunk Area', "")
 			table.addValue(angleLabel, "")
 
 		table.show('Angle Results for Chunks - ' + self.imageTitle)

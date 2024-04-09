@@ -23,7 +23,9 @@ class ControlTarget():
 	OVERLAY_OPTIONS = 11,
 	BASIC_CHUNK_EXCLUSIONS = 12,
 	DOUBLETS = 13,
-	COLORS = 14
+	COLORS = 14,
+	DRAWING = 15,
+	ANNOTATION = 16
 	
 class ControlPositioningOptions():
 	def __init__(self):
@@ -205,7 +207,6 @@ class OptionsDialog(JDialog):
                 opts.paddingLeft = 20
 
 		# Create and position the Split Doublets W checkbox
-                #opts.setWeightAll(1)
 		self.splitDoubletsWCheckbox = JCheckBox("<html><body><b>Split</b> chunks that are this many times as wide:</body></html>", self.startingOptions.splitDoubletsW, actionPerformed = self.splitDoubletsWCheckboxCheckedChanged)
 		self.addControl(self.splitDoubletsWCheckbox, ControlTarget.DOUBLETS, opts)
 
@@ -224,7 +225,6 @@ class OptionsDialog(JDialog):
                 opts.setWeightAll(1)
 
                 # Create and position the Exclude Doublets W checkbox
-                #opts.setWeightAll(1)
 		self.excludeDoubletsWCheckbox = JCheckBox("<html><body><b>Exclude</b> chunks that are this many times as wide:</body></html>", self.startingOptions.excludeOblongCellsW, actionPerformed = self.excludeDoubletsWCheckboxCheckedChanged)
 		self.addControl(self.excludeDoubletsWCheckbox, ControlTarget.DOUBLETS, opts)
 
@@ -251,7 +251,6 @@ class OptionsDialog(JDialog):
                 opts.paddingLeft = 20
 
 		# Create and position the Split Doublets H checkbox
-                #opts.setWeightAll(1)
 		self.splitDoubletsHCheckbox = JCheckBox("<html><body><b>Split</b> chunks that are this many times as tall:</body></html>", self.startingOptions.splitDoubletsH, actionPerformed = self.splitDoubletsHCheckboxCheckedChanged)
 		self.addControl(self.splitDoubletsHCheckbox, ControlTarget.DOUBLETS, opts)
 
@@ -270,7 +269,6 @@ class OptionsDialog(JDialog):
                 opts.setWeightAll(1)
 
                 # Create and position the Exclude Doublets H checkbox
-                #opts.setWeightAll(1)
 		self.excludeDoubletsHCheckbox = JCheckBox("<html><body><b>Exclude</b> chunks that are this many times as tall:</body></html>", self.startingOptions.excludeOblongCellsH, actionPerformed = self.excludeDoubletsHCheckboxCheckedChanged)
 		self.addControl(self.excludeDoubletsHCheckbox, ControlTarget.DOUBLETS, opts)
 
@@ -321,9 +319,7 @@ class OptionsDialog(JDialog):
 		opts.startX = 1
 		self.maxSmallCaveSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.smallCaveMaxSize, 1, 1000000, 1))
 		self.maxSmallCaveSpinner.setEnabled(self.startingOptions.ignoreSmallCaves)
-		self.addControl(self.maxSmallCaveSpinner, ControlTarget.CAVE_DETECTION, opts)
-
-		
+		self.addControl(self.maxSmallCaveSpinner, ControlTarget.CAVE_DETECTION, opts)		
 
 		# Create and position the Ignore Large Caves checkbox
 		opts.startX = 0
@@ -336,9 +332,7 @@ class OptionsDialog(JDialog):
 		opts.startX = 1
 		self.minLargeCaveSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.largeCaveMinSize, 1, 1000000, 1))
 		self.minLargeCaveSpinner.setEnabled(self.startingOptions.ignoreLargeCaves)
-		self.addControl(self.minLargeCaveSpinner, ControlTarget.CAVE_DETECTION, opts)
-
-		
+		self.addControl(self.minLargeCaveSpinner, ControlTarget.CAVE_DETECTION, opts)		
 		
 		# Create and position the (true) Cave Detection label
 		opts.startX = 0
@@ -647,22 +641,8 @@ class OptionsDialog(JDialog):
 		self.addControl(self.overlayLabelsCheckbox, ControlTarget.OVERLAY_OPTIONS, ovopts)
 		ovopts.startX += 1
 		self.overlayAnglesCheckbox = JCheckBox("Angles", self.startingOptions.outputOverlayAngles)
-		self.addControl(self.overlayAnglesCheckbox, ControlTarget.OVERLAY_OPTIONS, ovopts)
-		ovopts.startX = 0
-		ovopts.startY += 1
-		ovopts.width = 3
-		ovopts.setPaddingAll(0)
-                ovopts.paddingBottom = 5
-                ovopts.paddingLeft = 5
-		self.overrideOverlayFontCheckbox = JCheckBox("Override default label font size:", self.startingOptions.outputOverlayOverrideFontSize, actionPerformed = self.overrideOverlayFontCheckboxCheckedChanged)
-		self.overrideOverlayFontCheckbox.setMinimumSize(self.overrideOverlayFontCheckbox.getPreferredSize())
-		self.overrideOverlayFontSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.outputOverlayFontSize, 4, 1000, 1))
-		self.overrideOverlayFontSpinner.setMinimumSize(self.overrideOverlayFontSpinner.getPreferredSize())
-		overlayFontSizePanel = JPanel(FlowLayout(FlowLayout.LEADING))
-		overlayFontSizePanel.add(self.overrideOverlayFontCheckbox)
-		overlayFontSizePanel.add(self.overrideOverlayFontSpinner)
-		self.outputOverlayCheckboxCheckedChanged(None)
-		self.addControl(overlayFontSizePanel, ControlTarget.OVERLAY_OPTIONS, ovopts)
+		self.addControl(self.overlayAnglesCheckbox, ControlTarget.OVERLAY_OPTIONS, ovopts)	
+		self.outputOverlayCheckboxCheckedChanged(None)		
                 opts.startY += 1
                 opts.horizontalFill = True
 		self.addControl(self.outputOverlayOptionsPanel, ControlTarget.OUTPUT, opts)
@@ -691,8 +671,6 @@ class OptionsDialog(JDialog):
 		
 		# Create and position the margin spinner		
 		opts.startY += 1
-		#opts.setWeightAll(1)
-		#opts.anchor = GridBagConstraints.FIRST_LINE_START	
 		self.outputImageMarginLabel = JLabel("Add gray margin to the right? (Width in Pixels):")
 		self.outputImageMarginLabel.setMinimumSize(self.outputImageMarginLabel.getPreferredSize())
 		self.outputImageMarginSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.outputImageMarginPixels, 0, 1000, 1))
@@ -703,7 +681,6 @@ class OptionsDialog(JDialog):
 		marginPanel.add(self.outputImageMarginLabel)
 		marginPanel.add(self.outputImageMarginSpinner)
 		marginPanel.setMinimumSize(marginPanel.getPreferredSize())
-		#marginPanel.setBackground(Color(255, 0, 0))
 		self.addControl(marginPanel, ControlTarget.IMAGE_OPTIONS, opts)
 		
 		# Create and position the Draw Arrows checbox
@@ -728,29 +705,10 @@ class OptionsDialog(JDialog):
 		opts.startY += 1
 		opts.startX = 0
 		opts.width = 3
-		#self.drawPlasticWrapCombobox = JComboBox(["Do not highlight plastic wrap pixels", '<html><body>Draw all plastic wrap pixels in <span style="background-color: #ffff00">Yellow</span></body></html>', '<html><body>Draw newly-added plastic wrap pixels in <span style="background-color: #00ffff">Cyan</span>, <span style="background-color: #ffff00">Yellow</span> otherwise</body></html>'])
-		#if self.startingOptions.outputImagePlasticWrapBorder:
-		#	self.drawPlasticWrapCombobox.setSelectedIndex(1)
-		#	if self.startingOptions.outputImagePlasticWrapAddedWeight:
-		#		self.drawPlasticWrapCombobox.setSelectedIndex(2)
 		self.drawPlasticWrapCombobox = JComboBox()
 		self.populatePlasticWrapComboboxItems(self.startingOptions.getColorPlasticWrap(), self.startingOptions.getColorPlasticWrapNew())
 		self.addControl(self.drawPlasticWrapCombobox, ControlTarget.PROCESSED_IMAGE_OPTIONS, opts)
-
-                # Create and position the Override Image Font Size checkbox and spinner
-		self.overrideImageFontCheckbox = JCheckBox("Override default label font size:", self.startingOptions.outputImageOverrideFontSize, actionPerformed = self.overrideImageFontCheckboxCheckedChanged)
-		self.overrideImageFontCheckbox.setMinimumSize(self.overrideImageFontCheckbox.getPreferredSize())
-		self.overrideImageFontSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.outputImageFontSize, 4, 1000, 1))
-		self.overrideImageFontSpinner.setMinimumSize(self.overrideImageFontSpinner.getPreferredSize())
-                imageFontSizePanel = JPanel(FlowLayout(FlowLayout.LEADING))
-                imageFontSizePanel.add(self.overrideImageFontCheckbox)
-                imageFontSizePanel.add(self.overrideImageFontSpinner)
-                opts.startY += 1
-                opts.setPaddingAll(0)
-                opts.paddingBottom = 5
-                opts.paddingLeft = 5
-                self.addControl(imageFontSizePanel, ControlTarget.PROCESSED_IMAGE_OPTIONS, opts)
-		
+                		
 		# Create and position the Draw Noise checkbox
 		opts = ControlPositioningOptions()
 		opts.setPaddingAll(10)
@@ -796,8 +754,13 @@ class OptionsDialog(JDialog):
 		self.addControl(self.drawBadChunksCheckbox, ControlTarget.DISQUALIFIED_IMAGE_OPTIONS, opts)
 
 	def initializeColorsTab(self):
+                self.drawingLayout = GridBagLayout()
+                self.drawingTab = JPanel(self.drawingLayout)
+                
                 self.colorsLayout = GridBagLayout()
 		self.colorsTab = JPanel(self.colorsLayout)
+		colorsBorder = TitledBorder("Colors")
+		self.colorsTab.setBorder(colorsBorder)
 
 		opts = ControlPositioningOptions()
 
@@ -1025,6 +988,97 @@ class OptionsDialog(JDialog):
 		opts.setWeightAll(1)
 
 		self.addControl(JLabel(' '), ControlTarget.COLORS, opts)
+
+                self.annotationLayout = GridBagLayout()
+		self.annotationPanel = JPanel(self.annotationLayout)
+		atb = TitledBorder("Annotation")
+		self.annotationPanel.setBorder(atb)
+
+                opts = ControlPositioningOptions()
+                opts.anchor = GridBagConstraints.WEST
+                opts.setWeightAll(0)
+                opts.setPaddingAll(10)
+                opts.paddingBottom = 0
+
+                self.drawingFontSizeLabel = JLabel('Label Font Size')
+                self.addControl(self.drawingFontSizeLabel, ControlTarget.ANNOTATION, opts)
+
+                opts.startX += 1
+
+                self.drawingFontSizeSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.drawingFontSize, 4, 1000, 1))
+                self.drawingFontSizeSpinner.setMinimumSize(self.drawingFontSizeSpinner.getPreferredSize())
+                self.addControl(self.drawingFontSizeSpinner, ControlTarget.ANNOTATION, opts)
+
+                opts.startX += 1
+                
+                self.drawingFontSizeDefaultButton = JButton('Set to Default', actionPerformed = self.drawingFontSizeDefaultButtonClicked)
+                self.drawingFontSizeDefaultButton.setMinimumSize(self.drawingFontSizeDefaultButton.getPreferredSize())
+                self.addControl(self.drawingFontSizeDefaultButton, ControlTarget.ANNOTATION, opts)
+
+                opts.startX = 0
+                opts.startY += 1
+
+                self.drawingArrowheadSizeLabel = JLabel('Arrowhead Size')
+                self.addControl(self.drawingArrowheadSizeLabel, ControlTarget.ANNOTATION, opts)
+
+                opts.startX += 1
+
+                self.drawingArrowheadSizeSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.drawingArrowheadSize, 1, 1000, 1))
+                self.drawingArrowheadSizeSpinner.setMinimumSize(self.drawingArrowheadSizeSpinner.getPreferredSize())
+                self.addControl(self.drawingArrowheadSizeSpinner, ControlTarget.ANNOTATION, opts)
+
+                opts.startX += 1
+
+                self.drawingArrowheadSizeDefaultButton = JButton('Set to Default', actionPerformed = self.drawingArrowheadSizeDefaultButtonClicked)
+                self.drawingArrowheadSizeDefaultButton.setMinimumSize(self.drawingArrowheadSizeDefaultButton.getPreferredSize())
+                self.addControl(self.drawingArrowheadSizeDefaultButton, ControlTarget.ANNOTATION, opts)
+
+                opts.startX = 0
+                opts.startY += 1
+                opts.paddingBottom = 10
+
+                self.drawingArrowlineSizeLabel = JLabel('Arrow Line Width')
+                self.addControl(self.drawingArrowlineSizeLabel, ControlTarget.ANNOTATION, opts)
+
+                opts.startX += 1
+
+                self.drawingArrowlineSizeSpinner = JSpinner(SpinnerNumberModel(self.startingOptions.drawingArrowlineSize, 1, 1000, 1))
+                self.drawingArrowlineSizeSpinner.setMinimumSize(self.drawingArrowlineSizeSpinner.getPreferredSize())
+                self.addControl(self.drawingArrowlineSizeSpinner, ControlTarget.ANNOTATION, opts)
+
+                opts.startX += 1
+
+                self.drawingArrowlineSizeDefaultButton = JButton('Set to Default', actionPerformed = self.drawingArrowlineSizeDefaultButtonClicked)
+                self.drawingArrowlineSizeDefaultButton.setMinimumSize(self.drawingArrowlineSizeDefaultButton.getPreferredSize())
+                self.addControl(self.drawingArrowlineSizeDefaultButton, ControlTarget.ANNOTATION, opts)
+
+                self.drawingFontSizeLabel.setMinimumSize(self.drawingArrowlineSizeLabel.getPreferredSize())
+                self.drawingArrowheadSizeLabel.setMinimumSize(self.drawingArrowlineSizeLabel.getPreferredSize())                
+
+		opts = ControlPositioningOptions()
+		opts.anchor = GridBagConstraints.EAST
+                opts.setWeightAll(0)
+                opts.setPaddingAll(0)
+                opts.paddingTop = 10
+                opts.paddingLeft = 10                
+
+		self.addControl(self.colorsTab, ControlTarget.DRAWING, opts)                
+
+		opts.startX += 1
+                self.addControl(JLabel(' '), ControlTarget.DRAWING, opts)
+
+                opts.startX = 0
+                opts.startY += 1
+                self.addControl(self.annotationPanel, ControlTarget.DRAWING, opts)
+
+                opts.startX += 1
+                self.addControl(JLabel(' '), ControlTarget.DRAWING, opts)
+
+                opts.startX = 0
+                opts.startY += 1
+                opts.width = 2
+                opts.setWeightAll(1)
+                self.addControl(JLabel(' '), ControlTarget.DRAWING, opts)
 		
 	def initializeTabs(self):
 	
@@ -1036,7 +1090,7 @@ class OptionsDialog(JDialog):
 		self.tabbedPane.add("Cave Detection", self.caveDetectionTab)
 		self.tabbedPane.add("Angle Measurements", self.angleMeasurementTab)
 		self.tabbedPane.add("Output", self.outputTab)
-		self.tabbedPane.add("Colors", self.colorsTab)
+		self.tabbedPane.add("Drawing", self.drawingTab)
 		
 		opts = ControlPositioningOptions()
 		opts.dock = True
@@ -1105,6 +1159,10 @@ class OptionsDialog(JDialog):
                         self.doubletsPanel.add(control, gbc)
                 elif target == ControlTarget.COLORS:
                         self.colorsTab.add(control, gbc)
+                elif target == ControlTarget.DRAWING:
+                        self.drawingTab.add(control, gbc)
+                elif target == ControlTarget.ANNOTATION:
+                        self.annotationPanel.add(control, gbc)
 			
 	def setSelectedOptions(self):		
 		# Looks at the values of all the controls on the options dialog and sets the options according to them.
@@ -1227,9 +1285,6 @@ class OptionsDialog(JDialog):
 		self.selectedOptions.outputOverlayArrows = self.overlayArrowsCheckbox.isSelected()
 		self.selectedOptions.outputOverlayLabels = self.overlayLabelsCheckbox.isSelected()
 		self.selectedOptions.outputOverlayAngles = self.overlayAnglesCheckbox.isSelected()
-		self.selectedOptions.outputOverlayOverrideFontSize = self.overrideOverlayFontCheckbox.isSelected()
-		if self.selectedOptions.outputOverlayOverrideFontSize == True:
-                        self.selectedOptions.outputOverlayFontSize = self.overrideOverlayFontSpinner.getValue()
 		
 		self.selectedOptions.outputImage = self.outputImageCheckbox.isSelected()
 		self.selectedOptions.outputImageArrows = self.drawArrowsCheckbox.isSelected()
@@ -1243,10 +1298,6 @@ class OptionsDialog(JDialog):
 			self.selectedOptions.outputImagePlasticWrapBorder = True
 			if plasticWrapMode > 1:
 				self.selectedOptions.outputImagePlasticWrapAddedWeight = True
-
-                self.selectedOptions.outputImageOverrideFontSize = self.overrideImageFontCheckbox.isSelected()
-		if self.selectedOptions.outputImageOverrideFontSize == True:
-                        self.selectedOptions.outputImageFontSize = self.overrideImageFontSpinner.getValue()
 				
 		self.selectedOptions.outputImageRemovedBorderCells = self.drawRemovedBorderChunksCheckbox.isSelected()
 		self.selectedOptions.outputImageNoise = self.drawRemovedNoiseCheckbox.isSelected()
@@ -1258,7 +1309,7 @@ class OptionsDialog(JDialog):
 		
 		self.selectedOptions.outputOverlay = self.outputOverlayCheckbox.isSelected()
 
-		# Color tab settings
+		# Drawing/Color tab settings
 		self.selectedOptions.setColorNoise(self.colorNoiseButton.getBackground())
 		self.selectedOptions.setColorConglomerates(self.colorConglomeratesButton.getBackground())
 		self.selectedOptions.setColorBorderChunks(self.colorBorderChunksButton.getBackground())
@@ -1269,6 +1320,10 @@ class OptionsDialog(JDialog):
 		self.selectedOptions.setColorRoseDiagram(self.colorRoseDiagramButton.getBackground())
 		self.selectedOptions.setColorPlasticWrap(self.colorPlasticWrapButton.getBackground())
 		self.selectedOptions.setColorPlasticWrapNew(self.colorPlasticWrapNewButton.getBackground())
+
+		self.selectedOptions.drawingFontSize = self.drawingFontSizeSpinner.getValue()
+		self.selectedOptions.drawingArrowheadSize = self.drawingArrowheadSizeSpinner.getValue()
+		self.selectedOptions.drawingArrowlineSize = self.drawingArrowlineSizeSpinner.getValue()
 		
 			
 	def eventOkClicked(self, event):
@@ -1400,11 +1455,6 @@ class OptionsDialog(JDialog):
 		self.outputOverlayOptionsPanel.setEnabled(checked)
 		for control in self.outputOverlayOptionsPanel.getComponents():
 			control.setEnabled(checked)
-		self.overrideOverlayFontCheckbox.setEnabled(checked)
-		if checked and self.overrideOverlayFontCheckbox.isSelected():
-                        self.overrideOverlayFontSpinner.setEnabled(True)
-                else:                        
-                        self.overrideOverlayFontSpinner.setEnabled(False)
 	
 	def outputImageCheckboxCheckedChanged(self, event):
 		checked = self.outputImageCheckbox.isSelected()
@@ -1413,19 +1463,6 @@ class OptionsDialog(JDialog):
 			subpanel.setEnabled(checked)
 			for control in subpanel.getComponents():
 				control.setEnabled(checked)
-                self.overrideImageFontCheckbox.setEnabled(checked)
-		if checked and self.overrideImageFontCheckbox.isSelected():
-                        self.overrideImageFontSpinner.setEnabled(True)
-                else:                        
-                        self.overrideImageFontSpinner.setEnabled(False)
-
-        def overrideOverlayFontCheckboxCheckedChanged(self, event):
-                checked = self.overrideOverlayFontCheckbox.isSelected()
-                self.overrideOverlayFontSpinner.setEnabled(checked)
-
-        def overrideImageFontCheckboxCheckedChanged(self, event):
-                checked = self.overrideImageFontCheckbox.isSelected()
-                self.overrideImageFontSpinner.setEnabled(checked)
 
         def populatePlasticWrapComboboxItems(self, pwColor, pwNewColor):
                 selIndex = 0
@@ -1447,7 +1484,15 @@ class OptionsDialog(JDialog):
                 self.drawPlasticWrapCombobox.addItem('<html><body>Draw newly-added plastic wrap pixels in <span style="background-color: ' + pwnHtml + '">this color</span>, and in <span style="background-color: ' + pwHtml + '">this color</span> otherwise</body></html>')
 
                 self.drawPlasticWrapCombobox.setSelectedIndex(selIndex)
-                
+
+        def drawingFontSizeDefaultButtonClicked(self, event):
+                self.drawingFontSizeSpinner.setValue(12)
+
+        def drawingArrowheadSizeDefaultButtonClicked(self, event):
+                self.drawingArrowheadSizeSpinner.setValue(5)
+
+        def drawingArrowlineSizeDefaultButtonClicked(self, event):
+                self.drawingArrowlineSizeSpinner.setValue(3)
 
         def colorButtonClicked(self, event):
                 colorButton = event.getSource()

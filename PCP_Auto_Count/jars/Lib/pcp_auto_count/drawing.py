@@ -7,10 +7,10 @@ from java.awt import Color, Font
 #textColor = Color(211, 84, 0)
 
 # A function for drawing an arrow on an image.
-def drawArrow(imp, arrowColor, startX, startY, endX, endY):
+def drawArrow(imp, arrowColor, startX, startY, endX, endY, headSize = 5, lineWidth = 3):
 	arw = Arrow(startX, startY, endX, endY)
-	arw.setHeadSize(5)
-	arw.setStrokeWidth(3)
+	arw.setHeadSize(headSize)
+	arw.setStrokeWidth(lineWidth)
 	arw.setFillColor(arrowColor)
 
 	processor = imp.getProcessor()			
