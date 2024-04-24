@@ -1,0 +1,15 @@
+macro "Measure With Options Action Tool - Cbbb R00ff C000 F11ee Cfff L6494 L5585 L56a6 L47b7 L48b8 L49b9 L4aaa L5b7b L6c7c C0c0 L92c2 La3c3 La4c4 L95a5 Dc5 L8696 L8788 L7879 B55 Cddd F47b8 C0ae R36c9 L47e7 C000 L5979 L5b7b L5d7d L99d9 L9bdb L9ddd" {
+  run("Measure With Options...");
+}
+
+macro "Measure Now Action Tool - Cbbb R00ff C000 F11ee Cfff L6494 L5585 L56a6 L47b7 L48b8 L49b9 L4aaa L5bab L6c9c C0c0 L92c2 La3c3 La4c4 L95a5 Dc5 L8696 L8788 L7879" {
+  run("Measure Now");
+}
+
+macro "Measure All Open Images With Options Action Tool - Cbbb R00ff C000 F11ee Cfff L6494 L474a C0c0 L92c2 La3c3 Lb4c4 B55 Cbbb R00ff C000 F11ee Cfff L6494 L5595 C0c0 L92c2 La3c3 Lb4c4 Da5 Dc5 Cddd F47b8 C0ae R36c9 L47e7 C000 L5979 L5b7b L5d7d L99d9 L9bdb L9ddd" {
+  run("Measure All Open Images With Options...");
+}
+
+macro "Measure All Open Images Now Action Tool - Cbbb R00ff C000 F11ee Cfff L6494 L474a C0c0 L92c2 La3c3 Lb4c4 B55 Cbbb R00ff C000 F11ee Cfff L6494 L5585 L56a6 L47b7 L48b8 L49b9 L4aaa L5bab L6c9c C0c0 L92c2 La3c3 La4c4 L95a5 Dc5 L8696 L8788 L7879" {
+  run("Measure All Open Images Now");
+}
