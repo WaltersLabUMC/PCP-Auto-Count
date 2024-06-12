@@ -423,33 +423,48 @@ class ChunkCollection:
 
 
 	# Generates a table showing the angle of each detected cell, and other metrics.
-	def showAngleResultsTable(self):
+	def showAngleResultsTable(self, options):
 		IJ.showStatus("PCP Auto Count: Generating Results Table...")
+		total = len(self.chunks)
+		if options.outputResultsTableIncludeBadChunks:
+                        total += len(self.badChunks)
 		table = ResultsTable()
-		if len(self.chunks) > 0:
-			count = self.count()
-			for i, c in enumerate(self.chunks):
-				IJ.showProgress(i, count)
-				table.addRow()
-				table.addValue("Label", c.label)
-				table.addValue("Chunk Centroid X", c.centroid[0])
-				table.addValue("Chunk Centroid Y", c.centroid[1])
-				table.addValue('Cave Centroid X', c.caveCentroid[0])
-				table.addValue('Cave Centroid Y', c.caveCentroid[1])
-				table.addValue('Vector Length', c.centroidDistance)
-				table.addValue('Chunk Area', c.getSize())
-				table.addValue(angleLabel, c.angle)
-		else:
-			IJ.showProgress(1, 1)
+		if total == 0:
+                        IJ.showProgress(1, 1)
 			table.addRow()
 			table.addValue("Label", "No chunks found.")
 			table.addValue("Chunk Centroid X", "")
 			table.addValue("Chunk Centroid Y", "")
-			table.addValue('Cave Centroid X', "")
-			table.addValue('Cave Centroid Y', "")
-			table.addValue('Vector Length', "")
-			table.addValue('Chunk Area', "")
+			table.addValue("Cave Centroid X", "")
+			table.addValue("Cave Centroid Y", "")
+			table.addValue("Vector Length", "")
+			table.addValue("Chunk Area", "")
 			table.addValue(angleLabel, "")
+		else:
+                        if len(self.chunks) > 0:
+                                for i, c in enumerate(self.chunks):
+                                        IJ.showProgress(i, total)
+                                        table.addRow()
+                                        table.addValue("Label", c.label)
+                                        table.addValue("Chunk Centroid X", c.centroid[0])
+                                        table.addValue("Chunk Centroid Y", c.centroid[1])
+                                        table.addValue("Cave Centroid X", c.caveCentroid[0])
+                                        table.addValue("Cave Centroid Y", c.caveCentroid[1])
+                                        table.addValue("Vector Length", c.centroidDistance)
+                                        table.addValue("Chunk Area", c.getSize())
+                                        table.addValue(angleLabel, c.angle)
+                        if options.outputResultsTableIncludeBadChunks and len(self.badChunks) > 0:
+                                for i, b in enumerate(self.badChunks):
+                                        IJ.showProgress(i, total)
+                                        table.addRow()
+                                        table.addValue("Label", b.label)
+                                        table.addValue("Chunk Centroid X", b.centroid[0])
+                                        table.addValue("Chunk Centroid Y", b.centroid[1])
+                                        table.addValue("Cave Centroid X", "")
+                                        table.addValue("Cave Centroid Y", "")
+                                        table.addValue("Vector Length", "")
+                                        table.addValue("Chunk Area", b.getSize())
+                                        table.addValue(angleLabel, "")			
 
 		table.show('Angle Results for Chunks - ' + self.imageTitle)
 

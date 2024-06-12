@@ -118,7 +118,7 @@ def main(quickrun=False):
 	# However, the results table, chunk summary, and rose diagram should all show combined data.
 		
 	if options.outputResultsTable == True:
-		showAngleResultsTable(chunkCollections, imageNames)	
+		showAngleResultsTable(chunkCollections, imageNames, options)	
 		
 	if options.outputCellSummary == True or options.outputRoseDiagram == True:
 		showAngleSummary(chunkCollections, options)	
@@ -137,9 +137,11 @@ def main(quickrun=False):
 	# All done.
 	IJ.showStatus("PCP Auto Count: Finished")
 	
-def showAngleResultsTable(chunkCollections, imageNames):
+def showAngleResultsTable(chunkCollections, imageNames, options):
 	IJ.showStatus("PCP Auto Count: Generating Results Table...")
 	collectionCount = len(chunkCollections)
+	if options.outputResultsTableIncludeBadChunks:
+                collectionCount = collectionCount * 2
 	IJ.showProgress(0, collectionCount)
 	table = ResultsTable()		
 	atLeastOneRow = False
@@ -154,13 +156,31 @@ def showAngleResultsTable(chunkCollections, imageNames):
 				table.addValue("Label", c.label)
 				table.addValue("Chunk Centroid X", c.centroid[0])
 				table.addValue("Chunk Centroid Y", c.centroid[1])
-				table.addValue('Cave Centroid X', c.caveCentroid[0])
-				table.addValue('Cave Centroid Y', c.caveCentroid[1])
-				table.addValue('Vector Length', c.centroidDistance)
-				table.addValue('Chunk Area', c.getSize())
+				table.addValue("Cave Centroid X", c.caveCentroid[0])
+				table.addValue("Cave Centroid Y", c.caveCentroid[1])
+				table.addValue("Vector Length", c.centroidDistance)
+				table.addValue("Chunk Area", c.getSize())
 				table.addValue(angleLabel, c.angle)					
 		
 		IJ.showProgress(i + 1, collectionCount)
+
+	for i, collection in enumerate(chunkCollections):
+
+                if len(collection.badChunks) > 0:
+                        atLeastOneRow = True
+                        for b in collection.badChunks:
+                                table.addRow()
+                                table.addValue("Image", imageNames[i])
+                                table.addValue("Label", b.label)
+                                table.addValue("Chunk Centroid X", b.centroid[0])
+                                table.addValue("Chunk Centroid Y", b.centroid[1])
+                                table.addValue("Cave Centroid X", "")
+                                table.addValue("Cave Centroid Y", "")
+                                table.addValue("Vector Length", "")
+                                table.addValue("Chunk Area", b.getSize())
+                                table.addValue(angleLabel, "")
+
+                IJ.showProgress(i + 1, collectionCount)
 		
 	if atLeastOneRow == False:
 		IJ.showProgress(1, 1)
@@ -169,10 +189,10 @@ def showAngleResultsTable(chunkCollections, imageNames):
 		table.addValue("Label", "")
 		table.addValue("Chunk Centroid X", "")
 		table.addValue("Chunk Centroid Y", "")
-		table.addValue('Cave Centroid X', "")
-		table.addValue('Cave Centroid Y', "")
-		table.addValue('Vector Length', "")
-		table.addValue('Chunk Area', "")
+		table.addValue("Cave Centroid X", "")
+		table.addValue("Cave Centroid Y", "")
+		table.addValue("Vector Length", "")
+		table.addValue("Chunk Area", "")
 		table.addValue(angleLabel, "")
 		
 	table.show('Angle Results for Chunks - Combined')

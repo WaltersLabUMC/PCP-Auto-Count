@@ -35,6 +35,7 @@ class ProcessingOptions:
 		self.angleAxisScaleZeroTo360 = angleAxisScaleZeroTo360
 		self.angleAxisZeroDirection = angleAxisZeroDirection
 		self.outputResultsTable = outputResultsTable
+		self.outputResultsTableIncludeBadChunks = False
 		self.outputImage = outputImage
 		self.outputImageArrows = outputImageArrows
 		self.outputImageLabels = outputImageLabels
@@ -155,6 +156,7 @@ class ProcessingOptions:
 		iniString += 'angle_axis_mode = ' + self.angleAxisMode.upper() + '\n\n'
 		iniString += '[output]\n'
 		iniString += 'output_results_table = ' + str(self.outputResultsTable).lower() + '\n'
+		iniString += 'output_results_table_include_bad_chunks = ' + str(self.outputResultsTableIncludeBadChunks).lower() + '\n'
 		iniString += 'output_image = ' + str(self.outputImage).lower() + '\n'
 		iniString += 'output_image_arrows = ' + str(self.outputImageArrows).lower() + '\n'
 		iniString += 'output_image_labels = ' + str(self.outputImageLabels).lower() + '\n'
@@ -534,6 +536,13 @@ def getProcessingOptionsFromSettingsFile():
                                 savedOptions.outputResultsTable = True
                         elif x == 'false':
                                 savedOptions.outputResultsTable = False
+
+                elif line.startswith('output_results_table_include_bad_chunks = '):
+                        x = line[42:]
+                        if x == 'true':
+                                savedOptions.outputResultsTableIncludeBadChunks = True
+                        elif x == 'false':
+                                savedOptions.outputResultsTableIncludeBadChunks = False
                 
                 elif line.startswith('output_image = '):
                         x = line[15:]

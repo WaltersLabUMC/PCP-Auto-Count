@@ -25,7 +25,8 @@ class ControlTarget():
 	DOUBLETS = 13,
 	COLORS = 14,
 	DRAWING = 15,
-	ANNOTATION = 16
+	ANNOTATION = 16,
+	RESULTS_TABLE_OPTIONS = 17
 	
 class ControlPositioningOptions():
 	def __init__(self):
@@ -528,11 +529,11 @@ class OptionsDialog(JDialog):
 		self.outputResultsTableCheckbox = JCheckBox("Results Table", self.startingOptions.outputResultsTable)
 		self.outputResultsTableCheckbox.setAlignmentX(Component.LEFT_ALIGNMENT)
 		self.mainOptionsPanel.add(self.outputResultsTableCheckbox)
-		self.mainOptionsPanel.add(Box.createRigidArea(Dimension(0, 5)))
+		self.mainOptionsPanel.add(Box.createRigidArea(Dimension(0, 5)))		
 		
 		# Create and position the Chunk Summary checkbox
 		opts.startY += 1
-		self.outputChunkSummaryCheckbox = JCheckBox("Chunk Summary   ", self.startingOptions.outputCellSummary)
+		self.outputChunkSummaryCheckbox = JCheckBox("Chunk Summary", self.startingOptions.outputCellSummary)
 		self.outputChunkSummaryCheckbox.setAlignmentX(Component.LEFT_ALIGNMENT)
 		self.mainOptionsPanel.add(self.outputChunkSummaryCheckbox)
 		self.mainOptionsPanel.add(Box.createRigidArea(Dimension(0, 5)))
@@ -623,6 +624,23 @@ class OptionsDialog(JDialog):
                         self.roseDiagramAngleMarkersCombobox.setPreferredSize(x)
 		
 		self.outputRoseDiagramCheckboxCheckedChanged(None)
+
+		# Position a panel to hold controls for Results Table options
+		rtBorder = TitledBorder("Results Table Options")
+		self.outputResultsTableOptionsPanel = JPanel(GridBagLayout())
+		self.outputResultsTableOptionsPanel.setBorder(rtBorder)
+		rtOpts = ControlPositioningOptions()
+		rtOpts.setPaddingAll(10)
+		rtOpts.setWeightAll(1)
+		rtOpts.anchor = GridBagConstraints.FIRST_LINE_START
+
+		# Add all the controls for Results Table options
+		self.outputBadResultsTableCheckbox = JCheckBox("Include information about Bad Chunks in the table", self.startingOptions.outputResultsTableIncludeBadChunks)
+		self.addControl(self.outputBadResultsTableCheckbox, ControlTarget.RESULTS_TABLE_OPTIONS, rtOpts)
+		opts.startY += 1
+                opts.horizontalFill = True
+		self.addControl(self.outputResultsTableOptionsPanel, ControlTarget.OUTPUT, opts)
+		
 		
 		# Position a panel to hold controls for Overlay options
 		olBorder = TitledBorder("Overlay Options")
@@ -644,7 +662,6 @@ class OptionsDialog(JDialog):
 		self.addControl(self.overlayAnglesCheckbox, ControlTarget.OVERLAY_OPTIONS, ovopts)	
 		self.outputOverlayCheckboxCheckedChanged(None)		
                 opts.startY += 1
-                opts.horizontalFill = True
 		self.addControl(self.outputOverlayOptionsPanel, ControlTarget.OUTPUT, opts)
 		
 		
@@ -1163,6 +1180,8 @@ class OptionsDialog(JDialog):
                         self.drawingTab.add(control, gbc)
                 elif target == ControlTarget.ANNOTATION:
                         self.annotationPanel.add(control, gbc)
+                elif target == ControlTarget.RESULTS_TABLE_OPTIONS:
+                        self.outputResultsTableOptionsPanel.add(control, gbc)
 			
 	def setSelectedOptions(self):		
 		# Looks at the values of all the controls on the options dialog and sets the options according to them.
@@ -1262,6 +1281,7 @@ class OptionsDialog(JDialog):
 					
 		# Output Tab settings
 		self.selectedOptions.outputResultsTable = self.outputResultsTableCheckbox.isSelected()
+		self.selectedOptions.outputResultsTableIncludeBadChunks = self.outputBadResultsTableCheckbox.isSelected()
 		self.selectedOptions.outputCellSummary = self.outputChunkSummaryCheckbox.isSelected()
 		self.selectedOptions.outputRoseDiagram = self.outputRoseDiagramCheckbox.isSelected()
 		

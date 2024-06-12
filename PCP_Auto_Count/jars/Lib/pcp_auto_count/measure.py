@@ -97,7 +97,7 @@ def main(quickrun=False):
 		nimp.show()	
 	
 	if options.outputResultsTable == True:
-		chunks.showAngleResultsTable()
+		chunks.showAngleResultsTable(options)
 	if options.outputCellSummary == True or options.outputRoseDiagram == True:
 		chunks.showAngleSummary(options)	
 	
